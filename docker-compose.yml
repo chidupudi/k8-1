@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "4000:4000"
+    depends_on:
+      - service1
+      - service2
+      - service3
+    restart: unless-stopped
+  service1:
+    build: ./service1
+    ports:
+      - "5001:5001"
+    restart: unless-stopped
+  service2:
+    build: ./service2
+    ports:
+      - "5002:5002"
+    restart: unless-stopped
+  service3:
+    build: ./service3
+    ports:
+      - "5003:5003"
+    restart: unless-stopped
+  client:
+    build: ./cleint
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:4000
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
